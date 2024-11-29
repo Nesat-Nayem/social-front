@@ -674,30 +674,30 @@ class SocialController extends Controller
         $request->validate([
             'postText' => 'required|string',
         ]);
-
+    
         try {
             $zipcode = $this->getLocationFromIP();
             $userName = session('user_userName');
-
+    
             $postData = [
                 'userName' => $userName,
                 'postText' => $request->postText,
                 'location' => $zipcode,
                 'isDeleted' => false
             ];
-
+    
             if ($request->imageUrl) {
-                $postData['img'] = json_decode($request->imageUrl); // This will be array of URLs
+                $postData['img'] = json_decode($request->imageUrl);
             }
             if ($request->audioUrl) {
-                $postData['audio'] = $request->audioUrl;
+                $postData['audio'] = json_decode($request->audioUrl); // Now handles array of URLs
             }
             if ($request->videoUrl) {
-                $postData['video'] = $request->videoUrl;
+                $postData['video'] = json_decode($request->videoUrl); // Now handles array of URLs
             }
-
+    
             $response = Http::post('https://social-backend-gamma-eight.vercel.app/api/posts', $postData);
-
+    
             if ($response->successful()) {
                 return redirect()->route('home')->with('swal', [
                     'icon' => 'success',
@@ -715,6 +715,7 @@ class SocialController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    
 
     // private function uploadToCloudinary($file, $resourceType = 'image')
     // {

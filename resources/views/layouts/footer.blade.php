@@ -29,43 +29,42 @@
       });
     }
     async function handleMultipleFileUpload(input, type) {
-      if (input.files && input.files.length > 0) {
+    if (input.files && input.files.length > 0) {
         $('#uploadStatusModal').modal('show');
         const uploadedUrls = [];
 
         for (let file of input.files) {
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append('type', type);
-          formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('type', type);
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
 
-          try {
-            const response = await fetch('/upload-file', {
-              method: 'POST',
-              body: formData,
-              headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-              }
-            });
+            try {
+                const response = await fetch('/upload-file', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
 
-            const data = await response.json();
-            if (data.url) {
-              uploadedUrls.push(data.url);
+                const data = await response.json();
+                if (data.url) {
+                    uploadedUrls.push(data.url);
+                }
+            } catch (error) {
+                console.error('Upload failed:', error);
+                showToast('error', 'File upload failed. Please try again.');
             }
-          } catch (error) {
-            console.error('Upload failed:', error);
-            showToast('error', 'File upload failed. Please try again.');
-          }
         }
 
-      console.log(uploadedUrls);
-
-        document.querySelector('#imageUrlInput').value = JSON.stringify(uploadedUrls);
+        // Set the URLs to the appropriate hidden input
+        document.querySelector(`input[name="${type}Url"]`).value = JSON.stringify(uploadedUrls);
         input.title = `${input.files.length} files selected`;
         showToast('success', 'Files uploaded successfully!');
         $('#uploadStatusModal').modal('hide');
-      }
     }
+}
 
 
     function handleFileUpload(input, type) {

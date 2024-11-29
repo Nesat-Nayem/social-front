@@ -193,9 +193,9 @@
                                                     style="width: 24px;height: 24px;">
 
                                                 <label class="fileContainer">
-                                                    <input type="file" name="postAudio" accept="audio/*" title="No audio file chosen"
-                                                      onchange="handleFileUpload(this, 'audio')" />
-                                                    <input type="hidden" name="audioUrl" />
+                                                <input type="file" name="postAudio[]" multiple accept="audio/*" title="No audio file chosen" 
+       onchange="handleMultipleFileUpload(this, 'audio')" />
+<input type="hidden" name="audioUrl" />
                                                   </label>
                                             </li>
 
@@ -225,9 +225,9 @@
                                                 <img src="images/icons/video.svg" alt="img"
                                                     style="width: 24px;height: 24px;">
                                                     <label class="fileContainer">
-                                                        <input type="file" name="postVideo" accept="video/*" title="No video file chosen"
-                                                          onchange="handleFileUpload(this, 'video')" />
-                                                        <input type="hidden" name="videoUrl" />
+                                                    <input type="file" name="postVideo[]" multiple accept="video/*" title="No video file chosen"
+       onchange="handleMultipleFileUpload(this, 'video')" />
+<input type="hidden" name="videoUrl" />
                                                       </label>
                                             </li>
 
